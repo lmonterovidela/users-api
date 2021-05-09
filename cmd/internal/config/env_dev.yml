@@ -1,0 +1,5 @@
+env: dev
+server:
+  port: 8080
+  log_requests: false
+  name: users-api

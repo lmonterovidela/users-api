@@ -4,7 +4,8 @@ import (
 	"flag"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"github.com/users-api/cmd/internal/server"
+	"github.com/users-api/cmd/server"
+	user "github.com/users-api/pkg/user"
 	"net/http"
 	"os"
 	"os/signal"
@@ -33,10 +34,12 @@ func startWebServer() {
 
 	s.AddRoute("/health", func(w http.ResponseWriter, r *http.Request) {
 		server.OK(w, r, map[string]interface{}{
-			"name": viper.GetString("server.name"),
+			"name":   viper.GetString("server.name"),
 			"status": "healthy",
-		})}, http.MethodGet)
+		})
+	}, http.MethodGet)
 
+	user.RegisterRoutes(s)
 
 	logrus.Info("starting http listener ...")
 	go func() {
@@ -56,9 +59,9 @@ func readConfiguration() {
 	//Util for several environments
 	env := flag.String("E", "dev", "Execution environment")
 	flag.Parse()
-	logrus.Infof("Starting routes planning in %s environment ...", *env)
+	logrus.Infof("Starting user api in %s environment ...", *env)
 
-	viper.AddConfigPath("./cmd/internal/config")
+	viper.AddConfigPath("./cmd/config")
 	viper.SetConfigName("env_" + *env)
 
 	if err := viper.ReadInConfig(); err != nil {

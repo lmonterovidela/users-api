@@ -1,0 +1,12 @@
+env: live
+server:
+  port: 8080
+  log_requests: false
+  name: user-api
+#this information must be in a vault or environment variables
+database:
+  host: localhost
+  port: 3306
+  pass: root
+  user: root
+  name: challenge

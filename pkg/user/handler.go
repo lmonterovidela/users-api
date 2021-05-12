@@ -14,6 +14,8 @@ type IHandler interface {
 	Get(w http.ResponseWriter, r *http.Request)
 	Find(w http.ResponseWriter, r *http.Request)
 	Delete(w http.ResponseWriter, r *http.Request)
+
+	GetLocation(w http.ResponseWriter, r *http.Request)
 }
 
 const (
@@ -138,6 +140,23 @@ func (h *Handler) Find(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (h *Handler) GetLocation(w http.ResponseWriter, r *http.Request) {
+	userId, err := server.GetIntFromPath(r, "id")
+	if err != nil {
+		server.BadRequest(w, r, "")
+		return
+	}
+
+	location, err := h.service.GetLocation(userId)
+
+	if err != nil {
+		handlerException(w, r, err)
+		return
+	}
+
+	server.OK(w, r, location)
+}
+
 func handlerException(w http.ResponseWriter, r *http.Request, err error) {
 	switch err.(type) {
 	case *NotFoundError:
@@ -152,11 +171,13 @@ func RegisterRoutes(s *server.Server) {
 
 	handler := newHandler()
 
-	s.AddRoute("/v{version}/user", handler.Create, http.MethodPost)
-	s.AddRoute("/v{version}/user/{id}", handler.Update, http.MethodPut)
-	s.AddRoute("/v{version}/user/{id}", handler.Get, http.MethodGet)
-	s.AddRoute("/v{version}/user", handler.Find, http.MethodGet)
-	s.AddRoute("/v{version}/user/{id}", handler.Delete, http.MethodDelete)
+	s.AddRoute("/v{version}/users", handler.Create, http.MethodPost)
+	s.AddRoute("/v{version}/users/{id}", handler.Update, http.MethodPut)
+	s.AddRoute("/v{version}/users/{id}", handler.Get, http.MethodGet)
+	s.AddRoute("/v{version}/users", handler.Find, http.MethodGet)
+	s.AddRoute("/v{version}/users/{id}", handler.Delete, http.MethodDelete)
+
+	s.AddRoute("/v{version}/users/{id}/locations", handler.GetLocation, http.MethodGet)
 }
 
 func newHandler() IHandler {

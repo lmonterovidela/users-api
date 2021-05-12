@@ -6,6 +6,7 @@ type IService interface {
 	Get(userId int) (User, error)
 	Find(name string, size int, offset int) (UserList, error)
 	Delete(userId int) error
+	GetLocation(userId int) (Location, error)
 }
 
 type Service struct {
@@ -30,6 +31,10 @@ func (s *Service) Find(name string, size int, offset int) (UserList, error) {
 
 func (s *Service) Delete(userId int) error {
 	return s.repository.Delete(userId)
+}
+
+func (s *Service) GetLocation(userId int) (Location, error) {
+	return s.repository.GetLocation(userId)
 }
 
 func NewService() IService {

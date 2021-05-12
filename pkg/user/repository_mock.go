@@ -44,3 +44,12 @@ func (m *RepositoryMock) Delete(userId int) error {
 	args := m.Called(userId)
 	return args.Error(0)
 }
+
+func (m *RepositoryMock) GetLocation(userId int) (Location, error) {
+	args := m.Called(userId)
+	err := args.Error(1)
+	if args.Get(0) == nil {
+		return Location{}, err
+	}
+	return args.Get(0).(Location), err
+}

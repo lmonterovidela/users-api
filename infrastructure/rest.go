@@ -33,6 +33,7 @@ func (r *RestProvider) Get(url string, headers map[string]string, body interface
 		req.Header.Add(key, value)
 	}
 
+
 	if err != nil {
 		return nil, err
 	}

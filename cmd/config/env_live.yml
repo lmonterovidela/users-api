@@ -10,3 +10,9 @@ database:
   pass: root
   user: root
   name: challenge
+clients:
+  map:
+    base_url: https://api.mapbox.com
+    timeout: 10000
+    #this information must be in a vault or environment variables
+    token: pk.eyJ1IjoibHVjaWFub21vbnRlcm92aWRlbGEiLCJhIjoiY2tvbHZncjN6MDNlcDJ1bzRnMHdyenV0NSJ9.rrdxAiNs0IBghXlvMGuj4A

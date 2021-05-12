@@ -23,3 +23,28 @@ type User struct {
 func (u *User) Validate() error {
 	return validator.New().Struct(u)
 }
+
+
+type Location struct {
+	Type     string   `json:"type"`
+	Query    []string `json:"query"`
+	Features []struct {
+		ID         string   `json:"id"`
+		Type       string   `json:"type"`
+		PlaceType  []string `json:"place_type"`
+		Text      string    `json:"text"`
+		PlaceName string    `json:"place_name"`
+		Bbox      []float64 `json:"bbox,omitempty"`
+		Center    []float64 `json:"center"`
+		Geometry  struct {
+			Type        string    `json:"type"`
+			Coordinates []float64 `json:"coordinates"`
+		} `json:"geometry"`
+		Context []struct {
+			ID        string `json:"id"`
+			Wikidata  string `json:"wikidata"`
+			ShortCode string `json:"short_code"`
+			Text      string `json:"text"`
+		} `json:"context"`
+	} `json:"features"`
+}

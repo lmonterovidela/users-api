@@ -5,12 +5,13 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - 8081:8081
     depends_on:
       - mysql
     links:
       - mysql
   mysql:
+    container_name: db_mysql
     image: mysql:latest
     ports:
       - 3306:3306
